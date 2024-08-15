@@ -1,10 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
 
-@layer components {
+
+/* @layer components {
   .mycontainer {
-    @apply container px-40 py-16 mx-auto ;
+    @apply container px-40 py-16 mx-auto;
   }
+} */
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  from {
+    border-color: transparent;
+  }
+
+  to {
+    border-color: transparent;
+  }
+}
+
+.typing-animation {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid #ffffff;
+  animation: typing 4s steps(40, end), blink 0.75s step-end infinite;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 2rem;
+  color: #ffffff;
 }
