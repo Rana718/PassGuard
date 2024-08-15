@@ -21,7 +21,7 @@ const Landing = () => {
           <span className="block text-6xl font-extrabold mt-2 relative">
             <Typewriter 
               options={{ 
-                strings: ['PassGrad 🚀'], 
+                strings: ['PassGuard 🚀'], 
                 autoStart: true,
                 loop: true,
                 cursor: '_',
