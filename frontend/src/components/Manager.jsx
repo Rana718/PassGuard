@@ -2,19 +2,31 @@ import React, { useRef, useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from "../contexts/AuthContext";
 
 const Manager = () => {
     const passwordRef = useRef();
     const [form, setForm] = useState({ site: "", username: "", password: "", showPassword: false });
     const [passwordArray, setPasswordArray] = useState([]);
+    const { API } = useAuth();
+    
 
     useEffect(() => {
         getPasswords();
     }, []);
 
+    const getToken = () =>{
+        return localStorage.getItem('token');
+    };
+
     const getPasswords = async () => {
         try {
-            const req = await fetch("http://localhost:3000/");
+            const token = getToken();
+            const req = await fetch(`${API}/manager/`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             if (!req.ok) {
                 throw new Error('Failed to fetch passwords');
             }
@@ -60,10 +72,12 @@ const Manager = () => {
         if (form.site.length > 3 && form.username.length > 3 && form.password.length > 3) {
             const id = form.id || uuidv4();
             try {
-                const response = await fetch("http://localhost:3000/", {
+                const token = getToken();
+                const response = await fetch(`${API}/manager/`, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify({ ...form, id })
                 });
@@ -101,8 +115,12 @@ const Manager = () => {
     const deletePassword = async (id) => {
         if (window.confirm("Do you really want to delete this password?")) {
             try {
-                const response = await fetch(`http://localhost:3000/${id}`, {
-                    method: "DELETE"
+                const token = getToken();
+                const response = await fetch(`${API}/manager/${id}`, {
+                    method: "DELETE",
+                    headers:{
+                        Authorization: `Bearer ${token}`,
+                    }
                 });
                 if (!response.ok) {
                     throw new Error('Failed to delete password');
@@ -189,7 +207,7 @@ const Manager = () => {
                             </thead>
                             <tbody className="bg-green-100">
                                 {passwordArray.map((item, index) => (
-                                    <tr key={item.id}>
+                                    <tr key={`${item.id}-${index}`} className="hover:bg-green-300 duration-300">
                                         <td className="py-2 border border-white text-center">
                                             <div className="flex items-center justify-center">
                                                 <a href={item.site} target="_blank" rel="noopener noreferrer">{item.site}</a>
