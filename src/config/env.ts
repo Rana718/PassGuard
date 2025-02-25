@@ -11,6 +11,7 @@ const config = {
 
 
     //EmailJS
+    EMAIL: process.env.EMAILJS_EMAIL,
     EMAILJS_KEY: process.env.EMAILJS_KEY,
     EMAILJS_SERVICE: process.env.EMAILJS_SERVICE_ID,
     EMAILJS_OTP: process.env.EMAILJS_TEMPLATE_OTP,
